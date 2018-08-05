@@ -28,9 +28,10 @@ defmodule QuieroSaber.Question do
 
   def get_results(question_id, session_id) do
     query = from a in QuieroSaber.Answer,
-      where: a.question_id == ^question_id and a.session_id == ^session_id,
-      group_by: a.option_id,
-      select: %{"option_id" => a.option_id, "count" => count(a.id)}
+      join: o in QuieroSaber.Option,
+      where: o.id == a.option_id and a.question_id == ^question_id and a.session_id == ^session_id,
+      group_by: [a.option_id, o.title],
+      select: %{"option_id" => a.option_id, "title" => o.title, "count" => count(a.id)}
 
     Repo.all(query)
   end
