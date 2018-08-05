@@ -30,6 +30,12 @@
       </main>
 
       <footer>
+        <span><%= link "Home", to: page_path(@conn, :index) %></span> |
+        <span><%= link "Sessions", to: session_path(@conn, :index) %></span> |
+        <span><%= link "Questions", to: question_path(@conn, :index) %></span> |
+        <span><%= link "Options", to: option_path(@conn, :index) %></span> |
+        <span><%= link "Participants", to: participant_path(@conn, :index) %></span> |
+        <span><%= link "Answers", to: answer_path(@conn, :index) %></span>
       </footer>
 
     </div> <!-- /container -->
