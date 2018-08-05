@@ -1,0 +1,33 @@
+<h2>Show question</h2>
+
+<ul>
+
+  <li>
+    <strong>Title:</strong>
+    <%= @question.title %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @question.description %>
+  </li>
+
+  <li>
+    <strong>Attachment:</strong>
+    <%= @question.attachment %>
+  </li>
+
+  <li>
+    <strong>Order:</strong>
+    <%= @question.order %>
+  </li>
+
+  <li>
+    <strong>Status:</strong>
+    <%= @question.status %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: question_path(@conn, :edit, @question) %></span>
+<span><%= link "Back", to: question_path(@conn, :index) %></span>

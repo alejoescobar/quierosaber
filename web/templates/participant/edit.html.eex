@@ -1,0 +1,6 @@
+<h2>Edit participant</h2>
+
+<%= render "form.html", changeset: @changeset,
+                        action: participant_path(@conn, :update, @participant) %>
+
+<span><%= link "Back", to: participant_path(@conn, :index) %></span>

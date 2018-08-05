@@ -17,6 +17,11 @@ defmodule QuieroSaber.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    resources "/sessions", SessionController
+    resources "/questions", QuestionController
+    resources "/options", OptionController
+    resources "/participants", ParticipantController
+    resources "/answers", AnswerController
   end
 
   # Other scopes may use custom stacks.
