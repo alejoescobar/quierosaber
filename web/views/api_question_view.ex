@@ -26,4 +26,10 @@ defmodule QuieroSaber.ApiQuestionView do
       order: option.order
     }
   end
+
+  def render("results.json", %{results: results}) do
+    %{
+      results: results
+    }
+  end
 end

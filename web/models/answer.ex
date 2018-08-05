@@ -5,6 +5,7 @@ defmodule QuieroSaber.Answer do
     belongs_to :option, QuieroSaber.Option
     belongs_to :participant, QuieroSaber.Participant
     belongs_to :question, QuieroSaber.Question
+    belongs_to :session, QuieroSaber.Session
 
     timestamps()
   end
@@ -14,7 +15,7 @@ defmodule QuieroSaber.Answer do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:question_id, :option_id, :participant_id])
-    |> validate_required([:question_id, :option_id, :participant_id])
+    |> cast(params, [:question_id, :option_id, :participant_id, :session_id])
+    |> validate_required([:question_id, :option_id, :participant_id, :session_id])
   end
 end
