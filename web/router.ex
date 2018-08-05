@@ -32,6 +32,7 @@ defmodule QuieroSaber.Router do
     resources "/answers", ApiAnswerController, only: [:create]
     resources "/questions", ApiQuestionController, only: [:show]
     resources "/sessions", ApiSessionController, only: [:show] do
+      get "/questions/:id/results", ApiQuestionController, :results
       resources "/participants", ApiParticipantController, only: [:create]
     end
   end

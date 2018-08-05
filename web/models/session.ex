@@ -6,6 +6,7 @@ defmodule QuieroSaber.Session do
     field :status, :integer
 
     belongs_to :poll, QuieroSaber.Poll
+    has_many :answers, QuieroSaber.Answer
     has_many :participants, QuieroSaber.Participant
 
     timestamps()

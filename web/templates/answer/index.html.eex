@@ -4,6 +4,7 @@
   <thead>
     <tr>
       <th>ID</th>
+      <th>Session</th>
       <th>Question</th>
       <th>Option</th>
       <th>Participant</th>
@@ -15,6 +16,7 @@
 <%= for answer <- @answers do %>
     <tr>
       <td><%= answer.id %></td>
+      <td>(<%= answer.session_id %>) <%= answer.session.code %></td>
       <td>(<%= answer.question_id %>) <%= answer.question.title %></td>
       <td>(<%= answer.option_id %>) <%= answer.option.title %></td>
       <td>(<%= answer.participant_id %>) <%= answer.participant.nickname %></td>
