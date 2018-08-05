@@ -117,9 +117,13 @@ let App = {
               data.step = 'question';
             } else {
               data.questionIndex++;
-              let questionId = that.getQuestionId(data.questionIndex)
-              that.fetchQuestion(questionId)
-              data.step = 'question';
+              if (data.questionIndex >= data.poll.questions.length) {
+                data.step = 'final_screen';
+              } else {
+                let questionId = that.getQuestionId(data.questionIndex)
+                that.fetchQuestion(questionId)
+                data.step = 'question';
+              }
             }
           })
         },

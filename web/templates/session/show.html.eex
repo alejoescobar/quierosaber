@@ -21,6 +21,10 @@
     <button @click="nextQuestion">Next Question</button>
   </div>
 
+  <div v-if="step == 'final_screen'">
+    <p>Enhorabuena!!</p>
+  </div>
+
   <span><%= link "Edit", to: session_path(@conn, :edit, @session) %></span>
   <span><%= link "Back", to: session_path(@conn, :index) %></span>
 </div>

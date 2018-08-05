@@ -29,6 +29,10 @@
     <div>{{ results }}</div>
   </div>
 
+  <div class="col-xs-9" v-if="step == 'final_screen'">
+    <div>Enhorabuena!</div>
+  </div>
+
 </div>
 
 <script>
