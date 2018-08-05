@@ -2,7 +2,7 @@ defmodule QuieroSaber.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", QuieroSaber.RoomChannel
+  channel "session:lobby", QuieroSaber.SessionChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket,

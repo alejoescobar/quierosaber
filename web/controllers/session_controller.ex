@@ -31,6 +31,11 @@ defmodule QuieroSaber.SessionController do
     render(conn, "show.html", session: session)
   end
 
+  def welcome(conn, %{"session_id" => id}) do
+    session = Repo.get!(Session, id)
+    render(conn, "welcome.html", session: session)
+  end
+
   def edit(conn, %{"id" => id}) do
     session = Repo.get!(Session, id)
     changeset = Session.changeset(session)

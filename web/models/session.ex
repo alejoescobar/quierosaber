@@ -2,7 +2,7 @@ defmodule QuieroSaber.Session do
   use QuieroSaber.Web, :model
 
   schema "sessions" do
-    field :name, :string
+    field :code, :string
 
     timestamps()
   end
@@ -12,7 +12,7 @@ defmodule QuieroSaber.Session do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:name])
-    |> validate_required([:name])
+    |> cast(params, [:code])
+    |> validate_required([:code])
   end
 end
