@@ -1,35 +1,50 @@
-<div id="app" class="row">
-
-  <div class="col-xs-9" v-if="step == 'onboard'">
-    <input type="text" id="code" class="form-control" placeholder="Enter the code" autofocus>
+<div id="app">
+  <div class="logo-quiero"></div>
+  <div class="complete-center" v-if="step == 'onboard'">
+    <div class="input-code-container">
+      <div class="input-code-bg"></div>
+      <input
+        type="number"
+        id="code"
+        class="input-text"
+        placeholder="Enter the code"
+        pattern="\d*"
+        min="0"
+        >
+    </div>
     <button @click="findSession">JOIN</button>
   </div>
 
-  <div class="col-xs-9" v-if="step == 'assign_name'">
-    <input type="text" id="nickname" class="form-control" placeholder="Enter your nickname"required>
-    <button @click="createParticipant">OK</button>
-  </div>
-
-  <div class="col-xs-9" v-if="step == 'in_lobby'">
-    <p>Waiting for the game to begin</p>
-  </div>
-
-  <div class="col-xs-9" v-if="step == 'question'">
-    <p>Title: {{ question.title }}</p>
-    <div v-for="option in question.options">
-      <button @click="createAnswer(question.id, option.id)">{{option.title}}</button>
+  <div class="complete-center" v-if="step == 'assign_name'">
+    <div class="input-code-container">
+      <div class="input-code-bg"></div>
+      <input type="text" id="nickname" class="input-text" placeholder="Enter your nickname"required>
+      <button @click="createParticipant">OK</button>
     </div>
   </div>
 
-  <div class="col-xs-9" v-if="step == 'answered'">
-    <p>Wait while other players answer the question</p>
+  <div class="complete-center" v-if="step == 'in_lobby'">
+    <h1 class="wait-text">Waiting for the game to begin</h1>
   </div>
 
-  <div class="col-xs-9" v-if="step == 'results'">
+  <div class="answers-view complete-center" v-if="step == 'question'">
+    <p class="answer-title">{{ question.title }}</p>
+    <div class="answer-buttons">
+      <div v-for="option in question.options">
+        <button @click="createAnswer(question.id, option.id)">{{option.title}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="complete-center"  v-if="step == 'answered'">
+    <h1>Wait while other players answer the question</h1>
+  </div>
+
+  <div class="complete-center" v-if="step == 'results'">
     <canvas id="results-chart" width="400" height="400"></canvas>
   </div>
 
-  <div class="col-xs-9" v-if="step == 'final_screen'">
+  <div v-if="step == 'final_screen'">
     <div>Enhorabuena!</div>
   </div>
 
@@ -41,6 +56,15 @@
       let clientVue = App.initVue();
       clientVue.questionListener();
       clientVue.resultListener();
+
+      let codeInput = document.getElementById('code');
+      codeInput.addEventListener('change', limitChartLenght);
+
+      function limitChartLenght() {
+         if (this.value.length > 4) {
+             this.value = this.value.slice(0,4);
+         }
+      }
     }
   };
 </script>

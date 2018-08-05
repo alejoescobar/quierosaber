@@ -2,45 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name='viewport', content='width=device-width,
+    initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta name="theme" content="#00EB8C">
 
-    <title>Hello QuieroSaber!</title>
+    <title>QuieroSaber!</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <!-- <link rel="manifest" href="<%= static_path(@conn, "/manifest.json") %>"> -->
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-right">
-            <li><a href="http://www.phoenixframework.org/docs">Get Started</a></li>
-          </ul>
-        </nav>
-        <span class="logo"></span>
-      </header>
-
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>
-
-      <footer>
-        <span><%= link "Home", to: page_path(@conn, :index) %></span> |
-        <span><%= link "Polls", to: poll_path(@conn, :index) %></span> |
-        <span><%= link "Sessions", to: session_path(@conn, :index) %></span> |
-        <span><%= link "Questions", to: question_path(@conn, :index) %></span> |
-        <span><%= link "Options", to: option_path(@conn, :index) %></span> |
-        <span><%= link "Participants", to: participant_path(@conn, :index) %></span> |
-        <span><%= link "Answers", to: answer_path(@conn, :index) %></span>
-      </footer>
-
-    </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
     <script>require("web/static/js/app")</script>
+  <!-- <script type="text/javascript">
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').then(registration => {
+      registration.onupdatefound = () => {
+
+        const installingWorker = registration.installing;
+
+        installingWorker.onstatechange = (e) => {
+
+          if (installingWorker.state === 'installed') {
+            if (navigator.serviceWorker.controller) {
+              console.log('El contenido del sitio se ha actualizado, verás la nueva versión tras refrescar la página');
+            } else {
+              console.log('Sitio \'cacheado\' ¡Visitas offline activadas!');
+            }
+          }
+
+        };
+      };
+
+    }).catch(err => {
+      console.warn(':( Algo pasó durante el registro del Service Worker: ', err);
+    });
+
+    navigator.serviceWorker.ready.then(serviceWorkerRegistration => {
+      console.log('El Service Worker está listo :D');
+    })
+  }
+  </script> -->
   </body>
 </html>
