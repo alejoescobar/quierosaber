@@ -22,24 +22,14 @@ import socket from "./socket"
 var channel = socket.channel('session:lobby', {}); // connect to chat "room"
 
 let App = {
-  subscribe: function () {
-    // var channel = socket.channel('session:lobby', {}); // connect to chat "session"
-    channel.on('subscribe', function (payload) { // listen to the 'shout' event
-      var p = document.createElement("p");   // creaet new list item DOM element
-      var name = payload.name || 'guest';    // get name from payload or set default
-      p.innerHTML = '<b>' + name + '</b>';   // set li contents
-      var div = document.getElementById('participants')
-      div.appendChild(p);                    // append to list
-    });
-    channel.join(); // join the channel.
-  },
   initVue: function () {
     return new Vue({
       el: '#app',
       data: {
         session: {},
         participant: {},
-        step: 'onboard'
+        step: 'onboard',
+        question: 0
       },
       methods: {
         findSession: function () {
@@ -75,6 +65,29 @@ let App = {
               name: data.participant.nickname,     // get value of "name" of person sending the message
             });
           })
+        },
+        subscribe: function () {
+          channel.on('subscribe', function (payload) { // listen to the 'shout' event
+            var p = document.createElement("p");   // creaet new list item DOM element
+            var name = payload.name || 'guest';    // get name from payload or set default
+            p.innerHTML = '<b>' + name + '</b>';   // set li contents
+            var div = document.getElementById('participants')
+            div.appendChild(p);                    // append to list
+          });
+          channel.join(); // join the channel.
+        },
+        questionListener: function () {
+          let data = this.$data;
+          channel.on('next_question', function (payload) {
+            if (data.step != 'question') {
+              data.step = 'question'
+            } else {
+              data.question++
+            }
+          })
+        },
+        nextQuestion: function () {
+          channel.push('next_question', {});
         }
       }
     })

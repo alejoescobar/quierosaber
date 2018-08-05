@@ -14,12 +14,17 @@
     <p>Waiting for the game to begin</p>
   </div>
 
+  <div class="col-xs-9" v-if="step == 'question'">
+    <p>Rendering question with index: {{ question }}</p>
+  </div>
+
 </div>
 
 <script>
   window.appConfig = {
     onLoad: function(App) {
       let clientVue = App.initVue();
+      clientVue.questionListener();
     }
   };
 </script>

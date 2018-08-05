@@ -1,20 +1,28 @@
-<h2>Session Code: <%= @session.code %></h2>
 
 <!-- The list of messages will appear here: -->
-<div class="row">
+<div id="app" class="row">
+  <div v-if="step == 'onboard'">
+    <h2>Session Code: <%= @session.code %></h2>
+    <div id="participants" class="row">
+    </div>
+    <button @click="nextQuestion">Begin</button>
+  </div>
 
+  <div v-if="step == 'question'">
+    <p>Rendering question with index: {{ question }}</p>
+    <button @click="nextQuestion">Next Question</button>
+  </div>
+
+  <span><%= link "Edit", to: session_path(@conn, :edit, @session) %></span>
+  <span><%= link "Back", to: session_path(@conn, :index) %></span>
 </div>
-
-<div id="participants" class="row">
-</div>
-
-<span><%= link "Edit", to: session_path(@conn, :edit, @session) %></span>
-<span><%= link "Back", to: session_path(@conn, :index) %></span>
 
 <script>
   window.appConfig = {
     onLoad: function(App) {
-      App.subscribe();
+      let vue = App.initVue();
+      vue.subscribe();
+      vue.questionListener();
     }
   };
 </script>
