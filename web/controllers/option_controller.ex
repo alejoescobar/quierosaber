@@ -5,6 +5,7 @@ defmodule QuieroSaber.OptionController do
 
   def index(conn, _params) do
     options = Repo.all(Option)
+      |> Repo.preload([:question])
     render(conn, "index.html", options: options)
   end
 

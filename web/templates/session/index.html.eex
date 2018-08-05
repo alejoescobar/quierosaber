@@ -3,7 +3,9 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Name</th>
+      <th>ID</th>
+      <th>Poll</th>
+      <th>Code</th>
 
       <th></th>
     </tr>
@@ -11,6 +13,8 @@
   <tbody>
 <%= for session <- @sessions do %>
     <tr>
+      <td><%= session.id %></td>
+      <td>(<%= session.poll_id %>) <%= session.poll.name %></td>
       <td><%= session.code %></td>
 
       <td class="text-right">

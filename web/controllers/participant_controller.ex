@@ -5,6 +5,7 @@ defmodule QuieroSaber.ParticipantController do
 
   def index(conn, _params) do
     participants = Repo.all(Participant)
+      |> Repo.preload([:session])
     render(conn, "index.html", participants: participants)
   end
 

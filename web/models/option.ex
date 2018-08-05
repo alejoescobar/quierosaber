@@ -6,7 +6,7 @@ defmodule QuieroSaber.Option do
     field :order, :integer
 
     belongs_to :question, QuieroSaber.Question
-    has_many :answers, QuieroSaber.Answers
+    has_many :answers, QuieroSaber.Answer
 
     timestamps()
   end
@@ -16,7 +16,7 @@ defmodule QuieroSaber.Option do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :order])
-    |> validate_required([:title, :order])
+    |> cast(params, [:title, :order, :question_id])
+    |> validate_required([:title, :order, :question_id])
   end
 end

@@ -3,6 +3,8 @@
 <table class="table">
   <thead>
     <tr>
+      <th>ID</th>
+      <th>Session</th>
       <th>Device</th>
       <th>Nickname</th>
 
@@ -12,6 +14,8 @@
   <tbody>
 <%= for participant <- @participants do %>
     <tr>
+      <td><%= participant.id %></td>
+      <td>(<%= participant.session_id %>) <%= participant.session.code %></td>
       <td><%= participant.device_id %></td>
       <td><%= participant.nickname %></td>
 

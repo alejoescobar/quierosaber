@@ -16,7 +16,7 @@ defmodule QuieroSaber.Session do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:code])
-    |> validate_required([:code])
+    |> cast(params, [:code, :poll_id])
+    |> validate_required([:code, :poll_id])
   end
 end

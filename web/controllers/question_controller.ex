@@ -5,6 +5,7 @@ defmodule QuieroSaber.QuestionController do
 
   def index(conn, _params) do
     questions = Repo.all(Question)
+      |> Repo.preload([:poll])
     render(conn, "index.html", questions: questions)
   end
 
