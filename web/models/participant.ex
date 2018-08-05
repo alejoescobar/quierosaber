@@ -14,7 +14,8 @@ defmodule QuieroSaber.Participant do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:device_id, :nickname])
-    |> validate_required([:device_id, :nickname])
+    |> cast(params, [:device_id, :nickname, :session_id])
+    |> validate_required([:device_id, :nickname, :session_id])
+    |> validate_length(:nickname, min: 3, max: 15)
   end
 end
