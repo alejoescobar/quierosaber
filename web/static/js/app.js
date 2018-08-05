@@ -19,6 +19,7 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+import Chart from "chart.js"
 var channel = socket.channel('session:lobby', {}); // connect to chat "room"
 
 let App = {
@@ -78,88 +79,112 @@ let App = {
             data.step = 'in_lobby';
             channel.join();
             channel.push('subscribe', { // send the message to the server on "shout" channel
-              name: data.participant.nickname,     // get value of "name" of person sending the message
-            });
-          })
-        },
-        createAnswer: function (question_id, option_id) {
-          let data = this.$data;
-          let answerData = { answer: { session_id: data.session.id, participant_id: data.participant.id, question_id: question_id, option_id: option_id } }
-          fetch('/api/answers', {
-            method: 'POST',
-            body: JSON.stringify(answerData),
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          }).then(function (res) {
-            return res.json()
-          }).then(function (res) {
-            data.step = 'answered';
-          })
-        },
-        subscribe: function () {
-          channel.on('subscribe', function (payload) { // listen to the 'shout' event
-            var p = document.createElement("p");   // creaet new list item DOM element
-            var name = payload.name || 'guest';    // get name from payload or set default
-            p.innerHTML = '<b>' + name + '</b>';   // set li contents
-            var div = document.getElementById('participants')
-            div.appendChild(p);                    // append to list
+            name: data.participant.nickname,     // get value of "name" of person sending the message
           });
-          channel.join(); // join the channel.
-        },
-        questionListener: function () {
-          let that = this
-          let data = that.$data;
-          channel.on('next_question', function (payload) {
-            if (data.step != 'question' && data.step != 'results') {
-              let questionId = that.getQuestionId(data.questionIndex)
-              that.fetchQuestion(questionId)
-              data.step = 'question';
-            } else {
-              data.questionIndex++;
-              let questionId = that.getQuestionId(data.questionIndex)
-              that.fetchQuestion(questionId)
-              data.step = 'question';
-            }
-          })
-        },
-        resultListener: function () {
-          let that = this;
-          let data = this.$data;
-          channel.on('get_results', function (payload) {
-            data.step = 'results';
-            that.fetchResults();
-          })
-
-        },
-        fetchResults: function () {
-          let data = this.$data;
-          fetch('/api/sessions/' + data.session.id + '/questions/' + this.getQuestionId(data.questionIndex) + '/results').then(function (res) {
-            return res.json();
-          }).then(function (res) {
-            data.results = res.results
-          });
-        },
-        fetchQuestion: function (questionId) {
-          let data = this.$data;
-          fetch('/api/questions/' + questionId).then(function (res) {
-            return res.json();
-          }).then(function (res) {
-            data.question = res.question;
-          });
-        },
-        getQuestionId: function (questionIndex) {
-          return this.$data.poll.questions[questionIndex].id
-        },
-        showResults: function () {
-          channel.push('get_results', {});
-        },
-        nextQuestion: function () {
-          channel.push('next_question', {});
+        })
+      },
+      createAnswer: function (question_id, option_id) {
+        let data = this.$data;
+        let answerData = { answer: { session_id: data.session.id, participant_id: data.participant.id, question_id: question_id, option_id: option_id } }
+        fetch('/api/answers', {
+          method: 'POST',
+          body: JSON.stringify(answerData),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(function (res) {
+          return res.json()
+        }).then(function (res) {
+          data.step = 'answered';
+        })
+      },
+      subscribe: function () {
+        channel.on('subscribe', function (payload) { // listen to the 'shout' event
+        var p = document.createElement("p");   // creaet new list item DOM element
+        var name = payload.name || 'guest';    // get name from payload or set default
+        p.innerHTML = '<b>' + name + '</b>';   // set li contents
+        var div = document.getElementById('participants')
+        div.appendChild(p);                    // append to list
+      });
+      channel.join(); // join the channel.
+    },
+    questionListener: function () {
+      let that = this
+      let data = that.$data;
+      channel.on('next_question', function (payload) {
+        if (data.step != 'question' && data.step != 'results') {
+          let questionId = that.getQuestionId(data.questionIndex)
+          that.fetchQuestion(questionId)
+          data.step = 'question';
+        } else {
+          data.questionIndex++;
+          let questionId = that.getQuestionId(data.questionIndex)
+          that.fetchQuestion(questionId)
+          data.step = 'question';
         }
+      })
+    },
+    resultListener: function () {
+      let that = this;
+      let data = this.$data;
+      channel.on('get_results', function (payload) {
+        data.step = 'results';
+        that.fetchResults();
+      })
+      
+    },
+    parseResultsForChart: function (results, type) {
+      return {
+        // The type of chart we want to create
+        type: type,
+        
+        // The data for our dataset
+        data: {
+          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          datasets: [{
+            label: "My First dataset",
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
+            data: [0, 10, 5, 2, 20, 30, 45],
+          }]
+        },
+        
+        // Configuration options go here
+        options: {}
       }
-    })
+    },
+    fetchResults: function () {
+      let data = this.$data
+      let self = this
+      fetch('/api/sessions/' + data.session.id + '/questions/' + this.getQuestionId(data.questionIndex) + '/results').then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        data.results = res.results
+        data.resultsChart = self.parseResultsForChart(data.results, 'bar')
+        data.ctx = document.getElementById('results-chart').getContext('2d')
+        data.chart = new Chart(data.ctx, data.resultsChart)
+      });
+    },
+    fetchQuestion: function (questionId) {
+      let data = this.$data;
+      fetch('/api/questions/' + questionId).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        data.question = res.question;
+      });
+    },
+    getQuestionId: function (questionIndex) {
+      return this.$data.poll.questions[questionIndex].id
+    },
+    showResults: function () {
+      channel.push('get_results', {});
+    },
+    nextQuestion: function () {
+      channel.push('next_question', {});
+    }
   }
+})
+}
 };
 
 // Look for any onload messages, give it the App
