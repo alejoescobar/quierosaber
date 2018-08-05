@@ -140,17 +140,26 @@ let App = {
         
         // The data for our dataset
         data: {
-          labels: ["January", "February", "March", "April", "May", "June", "July"],
+          labels: results.map(option => option.title),
           datasets: [{
-            label: "My First dataset",
-            backgroundColor: 'rgb(255, 99, 132)',
-            borderColor: 'rgb(255, 99, 132)',
-            data: [0, 10, 5, 2, 20, 30, 45],
+            label: 'Participants response',
+            backgroundColor: 'rgb(0, 235, 140)',
+            borderColor: 'rgb(0, 235, 140)',
+            data: results.map(option => option.count)
           }]
         },
         
         // Configuration options go here
-        options: {}
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                stepSize: 1,
+                beginAtZero: true
+              }
+            }]
+          }
+        }
       }
     },
     fetchResults: function () {
