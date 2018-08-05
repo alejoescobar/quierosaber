@@ -18,7 +18,7 @@
 <%= for question <- @questions do %>
     <tr>
       <td><%= question.id %></td>
-      <td>(<%= question.id %>) <%= question.poll.name %></td>
+      <td>(<%= question.poll_id %>) <%= question.poll.name %></td>
       <td><%= question.title %></td>
       <td><%= question.description %></td>
       <td><%= question.attachment %></td>
