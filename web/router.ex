@@ -17,12 +17,24 @@ defmodule QuieroSaber.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+
+    # Admin CRUD
     resources "/sessions", SessionController
     resources "/questions", QuestionController
     resources "/options", OptionController
     resources "/participants", ParticipantController
     resources "/answers", AnswerController
     resources "/polls", PollController
+  end
+
+  scope "/api", QuieroSaber do
+    pipe_through :api
+
+    resources "/sessions", ApiSessionController, only: [:show]
+
+    scope "/sessions/:session_id", QuieroSaber do
+      post "/participants", ApiParticipantController, :create
+    end
   end
 
   # Other scopes may use custom stacks.
