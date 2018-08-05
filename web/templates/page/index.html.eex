@@ -15,7 +15,18 @@
   </div>
 
   <div class="col-xs-9" v-if="step == 'question'">
-    <p>Rendering question with index: {{ question }}</p>
+    <p>Title: {{ question.title }}</p>
+    <div v-for="option in question.options">
+      <button @click="createAnswer(question.id, option.id)">{{option.title}}</button>
+    </div>
+  </div>
+
+  <div class="col-xs-9" v-if="step == 'answered'">
+    <p>Wait while other players answer the question</p>
+  </div>
+
+  <div class="col-xs-9" v-if="step == 'results'">
+    <div>{{ results }}</div>
   </div>
 
 </div>
@@ -25,6 +36,7 @@
     onLoad: function(App) {
       let clientVue = App.initVue();
       clientVue.questionListener();
+      clientVue.resultListener();
     }
   };
 </script>
