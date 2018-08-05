@@ -11,14 +11,15 @@ defmodule QuieroSaber.SessionChannel do
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
+  def handle_in("next_question", payload, socket) do
+    broadcast socket, "next_question", payload
+    {:noreply, socket}
   end
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (session:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+  def handle_in("subscribe", payload, socket) do
+    broadcast socket, "subscribe", payload
     {:noreply, socket}
   end
 
