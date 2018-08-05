@@ -23,6 +23,11 @@ defmodule QuieroSaber.SessionChannel do
     {:noreply, socket}
   end
 
+  def handle_in("get_results", payload, socket) do
+    broadcast socket, "get_results", payload
+    {:noreply, socket}
+  end
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

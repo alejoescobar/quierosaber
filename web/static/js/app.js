@@ -29,10 +29,26 @@ let App = {
         session: {},
         participant: {},
         step: 'onboard',
-        question: 0
+        questionIndex: 0,
+        question: {},
+        results: [],
+        poll: {}
       },
       methods: {
+        setSession: function (session) {
+          this.$data.session = session
+          this.fetchPoll();
+        },
+        fetchPoll: function () {
+          let data = this.$data;
+          fetch('/api/polls/' + data.session.poll_id).then(function (res) {
+            return res.json();
+          }).then(function (res) {
+            data.poll = res.poll;
+          });
+        },
         findSession: function () {
+          let that = this
           let data = this.$data;
           let code = document.getElementById('code');
           fetch('/api/sessions/find?code=' + code.value).then(function (res) {
@@ -40,11 +56,11 @@ let App = {
             return res.json();
           }).then(function (res) {
             data.session = res.session;
+            that.fetchPoll();
             data.step = 'assign_name';
           });
         },
         createParticipant: function () {
-          let that = this
           let data = this.$data;
           let nickname = document.getElementById('nickname');
           let participantData = { participant: {nickname: nickname.value, device_id: 'testing', session_id: data.session.id} }
@@ -66,6 +82,21 @@ let App = {
             });
           })
         },
+        createAnswer: function (question_id, option_id) {
+          let data = this.$data;
+          let answerData = { answer: { session_id: data.session.id, participant_id: data.participant.id, question_id: question_id, option_id: option_id } }
+          fetch('/api/answers', {
+            method: 'POST',
+            body: JSON.stringify(answerData),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(function (res) {
+            return res.json()
+          }).then(function (res) {
+            data.step = 'answered';
+          })
+        },
         subscribe: function () {
           channel.on('subscribe', function (payload) { // listen to the 'shout' event
             var p = document.createElement("p");   // creaet new list item DOM element
@@ -77,14 +108,51 @@ let App = {
           channel.join(); // join the channel.
         },
         questionListener: function () {
-          let data = this.$data;
+          let that = this
+          let data = that.$data;
           channel.on('next_question', function (payload) {
-            if (data.step != 'question') {
-              data.step = 'question'
+            if (data.step != 'question' && data.step != 'results') {
+              let questionId = that.getQuestionId(data.questionIndex)
+              that.fetchQuestion(questionId)
+              data.step = 'question';
             } else {
-              data.question++
+              data.questionIndex++;
+              let questionId = that.getQuestionId(data.questionIndex)
+              that.fetchQuestion(questionId)
+              data.step = 'question';
             }
           })
+        },
+        resultListener: function () {
+          let that = this;
+          let data = this.$data;
+          channel.on('get_results', function (payload) {
+            data.step = 'results';
+            that.fetchResults();
+          })
+
+        },
+        fetchResults: function () {
+          let data = this.$data;
+          fetch('/api/sessions/' + data.session.id + '/questions/' + this.getQuestionId(data.questionIndex) + '/results').then(function (res) {
+            return res.json();
+          }).then(function (res) {
+            data.results = res.results
+          });
+        },
+        fetchQuestion: function (questionId) {
+          let data = this.$data;
+          fetch('/api/questions/' + questionId).then(function (res) {
+            return res.json();
+          }).then(function (res) {
+            data.question = res.question;
+          });
+        },
+        getQuestionId: function (questionIndex) {
+          return this.$data.poll.questions[questionIndex].id
+        },
+        showResults: function () {
+          channel.push('get_results', {});
         },
         nextQuestion: function () {
           channel.push('next_question', {});

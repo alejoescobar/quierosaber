@@ -9,7 +9,15 @@
   </div>
 
   <div v-if="step == 'question'">
-    <p>Rendering question with index: {{ question }}</p>
+    <p>Title: {{ question.title }}</p>
+    <div v-for="option in question.options">
+      <button>{{option.title}}</button>
+    </div>
+    <button @click="showResults">See Results</button>
+  </div>
+
+  <div v-if="step == 'results'">
+    <p>{{ results }}</p>
     <button @click="nextQuestion">Next Question</button>
   </div>
 
@@ -18,11 +26,17 @@
 </div>
 
 <script>
+  let session = {
+    id: <%= @session.id %>,
+    poll_id: <%= @session.poll_id %>
+  }
   window.appConfig = {
     onLoad: function(App) {
       let vue = App.initVue();
+      vue.setSession(session);
       vue.subscribe();
       vue.questionListener();
+      vue.resultListener();
     }
   };
 </script>

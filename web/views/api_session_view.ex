@@ -16,7 +16,8 @@ defmodule QuieroSaber.ApiSessionView do
   def sessions_json(session) do
     %{
       id: session.id,
-      code: session.code
+      code: session.code,
+      poll_id: session.poll_id
     }
   end
 end
