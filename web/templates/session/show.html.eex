@@ -17,7 +17,7 @@
   </div>
 
   <div v-if="step == 'results'">
-    <p>{{ results }}</p>
+    <canvas id="results-chart" width="400" height="400"></canvas>
     <button @click="nextQuestion">Next Question</button>
   </div>
 

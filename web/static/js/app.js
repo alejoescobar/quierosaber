@@ -19,6 +19,7 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 import socket from "./socket"
+import Chart from "chart.js"
 var channel = socket.channel('session:lobby', {}); // connect to chat "room"
 
 let App = {
@@ -134,14 +135,46 @@ let App = {
             data.step = 'results';
             that.fetchResults();
           })
-
+        },
+        parseResultsForChart: function (results, type) {
+          return {
+            // The type of chart we want to create
+            type: type,
+            
+            // The data for our dataset
+            data: {
+              labels: results.map(option => option.title),
+              datasets: [{
+                label: 'Participants response',
+                backgroundColor: 'rgb(0, 235, 140)',
+                borderColor: 'rgb(0, 235, 140)',
+                data: results.map(option => option.count)
+              }]
+            },
+            
+            // Configuration options go here
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    stepSize: 1,
+                    beginAtZero: true
+                  }
+                }]
+              }
+            }
+          }
         },
         fetchResults: function () {
           let data = this.$data;
+          let self = this;
           fetch('/api/sessions/' + data.session.id + '/questions/' + this.getQuestionId(data.questionIndex) + '/results').then(function (res) {
             return res.json();
           }).then(function (res) {
             data.results = res.results
+            data.resultsChart = self.parseResultsForChart(data.results, 'bar')
+            data.ctx = document.getElementById('results-chart').getContext('2d')
+            data.chart = new Chart(data.ctx, data.resultsChart)
           });
         },
         fetchQuestion: function (questionId) {
