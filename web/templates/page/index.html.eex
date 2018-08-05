@@ -6,8 +6,9 @@
 
 <script>
   window.appConfig = {
-    onLoad: function(Client) {
-      Client.initVue();
+    onLoad: function(App) {
+      let clientVue = App.initVue();
+      clientVue.findSession()
     }
   };
 </script>

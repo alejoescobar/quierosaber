@@ -48,9 +48,18 @@ let App = {
     });
   },
   initVue: function () {
-    new Vue({
+    return new Vue({
       el: '#app',
-      data: { quiubo: 'perro' }
+      data: { quiubo: 'perro' },
+      methods: {
+        findSession: function () {
+          fetch('/api/sessions/1').then(function (response) {
+            return response.json();
+          }).then(function (session) {
+            console.log(session);
+          });
+        }
+      }
     })
   }
 };
