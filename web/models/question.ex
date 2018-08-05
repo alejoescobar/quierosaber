@@ -1,6 +1,8 @@
 defmodule QuieroSaber.Question do
   use QuieroSaber.Web, :model
 
+  alias QuieroSaber.Repo
+
   schema "questions" do
     field :title, :string
     field :description, :string
@@ -22,5 +24,14 @@ defmodule QuieroSaber.Question do
     struct
     |> cast(params, [:title, :description, :attachment, :order, :status, :poll_id])
     |> validate_required([:title, :description, :attachment, :order, :status, :poll_id])
+  end
+
+  def get_results(question_id, session_id) do
+    query = from a in QuieroSaber.Answer,
+      where: a.question_id == ^question_id and a.session_id == ^session_id,
+      group_by: a.option_id,
+      select: %{"option_id" => a.option_id, "count" => count(a.id)}
+
+    Repo.all(query)
   end
 end

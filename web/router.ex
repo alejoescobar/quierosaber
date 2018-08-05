@@ -30,8 +30,10 @@ defmodule QuieroSaber.Router do
   scope "/api", QuieroSaber do
     pipe_through :api
     resources "/answers", ApiAnswerController, only: [:create]
-    get "/sessions/find", ApiSessionController, :find
+    resources "/questions", ApiQuestionController, only: [:show]
+    get "/sessions/find", ApiSessionController, :find    
     resources "/sessions", ApiSessionController, only: [:show] do
+      get "/questions/:id/results", ApiQuestionController, :results
       resources "/participants", ApiParticipantController, only: [:create]
     end
   end
