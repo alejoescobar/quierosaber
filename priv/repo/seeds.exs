@@ -41,7 +41,7 @@ question = Repo.insert!(%Question{
   poll_id: poll.id
 })
 
-Repo.insert! %Option{question_id: question.id, order: 1, title: "Idea y negocio"}
+Repo.insert! %Option{question_id: question.id, order: 1, title: "Modelo de negocio"}
 Repo.insert! %Option{question_id: question.id, order: 2, title: "Diseño"}
 Repo.insert! %Option{question_id: question.id, order: 3, title: "Desarrollo"}
 Repo.insert! %Option{question_id: question.id, order: 4, title: "De todo un poco"}
