@@ -1,13 +1,25 @@
-<h2>Show session</h2>
+<h2>Quiubo madafacas</h2>
 
-<ul>
+<!-- The list of messages will appear here: -->
+<div class="row">
+  <div class="col-xs-6">
+    <input type="text" id="name" class="form-control" placeholder="Enter your name" autofocus>
+  </div>
+  <div class="col-xs-6">
+    <input type="text" id="code" class="form-control" placeholder="Enter the code" autofocus>
+  </div>
+</div>
 
-  <li>
-    <strong>Name:</strong>
-    <%= @session.name %>
-  </li>
-
-</ul>
+<div id="participants" class="row">
+</div>
 
 <span><%= link "Edit", to: session_path(@conn, :edit, @session) %></span>
 <span><%= link "Back", to: session_path(@conn, :index) %></span>
+
+<script>
+  window.appConfig = {
+    onLoad: function(App) {
+      App.mainPage("<%= @session.code %>");
+    }
+  };
+</script>

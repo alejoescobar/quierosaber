@@ -20,30 +20,37 @@ import "phoenix_html"
 
 import socket from "./socket"
 
-var channel = socket.channel('session:lobby', {}); // connect to chat "room"
+let App = {
+  mainPage: function (sessionCode) {
+    var channel = socket.channel('session:lobby', {}); // connect to chat "room"
 
-channel.on('shout', function (payload) { // listen to the 'shout' event
-  console.log(payload)
-  var li = document.createElement("li"); // creaet new list item DOM element
-  var name = payload.name || 'guest';    // get name from payload or set default
-  li.innerHTML = '<b>' + name + '</b>: ' + payload.message; // set li contents
-  ul.appendChild(li);                    // append to list
-});
-
-channel.join(); // join the channel.
-
-
-var ul = document.getElementById('msg-list');        // list of messages.
-var name = document.getElementById('name');          // name of message sender
-var msg = document.getElementById('msg');            // message input field
-
-// "listen" for the [Enter] keypress event to send a message:
-msg.addEventListener('keypress', function (event) {
-  if (event.keyCode == 13 && msg.value.length > 0) { // don't sent empty msg.
-    channel.push('shout', { // send the message to the server on "shout" channel
-      name: name.value,     // get value of "name" of person sending the message
-      message: msg.value    // get message text (value) from msg input field.
+    channel.on('shout', function (payload) { // listen to the 'shout' event
+      var p = document.createElement("p");   // creaet new list item DOM element
+      var name = payload.name || 'guest';    // get name from payload or set default
+      p.innerHTML = '<b>' + name + '</b>';   // set li contents
+      var div = document.getElementById('participants')
+      div.appendChild(p);                    // append to list
     });
-    msg.value = '';         // reset the message input field for next message.
+
+    channel.join(); // join the channel.
+
+    var name = document.getElementById('name'); // name of message sender
+    var code = document.getElementById('code'); // code input field
+
+    // "listen" for the [Enter] keypress event to send a message:
+    code.addEventListener('keypress', function (event) {
+      if (event.keyCode == 13 && code.value === sessionCode) {
+        channel.push('shout', { // send the message to the server on "shout" channel
+          name: name.value,     // get value of "name" of person sending the message
+        });
+        code.value = '';         // reset the message input field for next message.
+      }
+    });
   }
-});
+};
+
+// Look for any onload messages, give it the App
+// context
+if (window.appConfig !== undefined) {
+  window.appConfig.onLoad.call(this, App);
+}
