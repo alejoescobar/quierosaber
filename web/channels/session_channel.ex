@@ -17,8 +17,8 @@ defmodule QuieroSaber.SessionChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (session:lobby).
-  def handle_in("shout", payload, socket) do
-    broadcast socket, "shout", payload
+  def handle_in("subscribe", payload, socket) do
+    broadcast socket, "subscribe", payload
     {:noreply, socket}
   end
 

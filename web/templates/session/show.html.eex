@@ -1,13 +1,8 @@
-<h2>Quiubo madafacas</h2>
+<h2>Session Code: <%= @session.code %></h2>
 
 <!-- The list of messages will appear here: -->
 <div class="row">
-  <div class="col-xs-6">
-    <input type="text" id="name" class="form-control" placeholder="Enter your name" autofocus>
-  </div>
-  <div class="col-xs-6">
-    <input type="text" id="code" class="form-control" placeholder="Enter the code" autofocus>
-  </div>
+
 </div>
 
 <div id="participants" class="row">
@@ -19,7 +14,7 @@
 <script>
   window.appConfig = {
     onLoad: function(App) {
-      App.mainPage("<%= @session.code %>");
+      App.subscribe();
     }
   };
 </script>
