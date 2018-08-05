@@ -46,6 +46,12 @@ let App = {
         code.value = '';         // reset the message input field for next message.
       }
     });
+  },
+  initVue: function () {
+    new Vue({
+      el: '#app',
+      data: { quiubo: 'perro' }
+    })
   }
 };
 
