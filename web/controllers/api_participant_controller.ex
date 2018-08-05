@@ -3,7 +3,9 @@ defmodule QuieroSaber.ApiParticipantController do
 
   alias QuieroSaber.ApiParticipant
 
-  def create(conn, _params) do
-    render(conn, "index.json", hello: "world")
+  def create(conn, %{"participant" => participant}, session) do
+    Logger.debug "Session: #{inspect(session)}"
+    Logger.debug "Participant: #{inspect(participant)}"
+    render conn, "show.json", participant: %Participant{}
   end
 end
