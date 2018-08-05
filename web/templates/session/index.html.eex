@@ -11,7 +11,7 @@
   <tbody>
 <%= for session <- @sessions do %>
     <tr>
-      <td><%= session.name %></td>
+      <td><%= session.code %></td>
 
       <td class="text-right">
         <span><%= link "Show", to: session_path(@conn, :show, session), class: "btn btn-default btn-xs" %></span>
