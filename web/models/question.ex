@@ -23,7 +23,7 @@ defmodule QuieroSaber.Question do
   def changeset(struct, params \\ %{}) do
     struct
     |> cast(params, [:title, :description, :attachment, :order, :status, :poll_id])
-    |> validate_required([:title, :description, :attachment, :order, :status, :poll_id])
+    |> validate_required([:title, :order, :poll_id])
   end
 
   def get_results(question_id, session_id) do
