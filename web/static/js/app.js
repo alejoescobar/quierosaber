@@ -50,13 +50,17 @@ let App = {
   initVue: function () {
     return new Vue({
       el: '#app',
-      data: { quiubo: 'perro' },
+      data: { session: {}, step: 'onboard' },
       methods: {
         findSession: function () {
-          fetch('/api/sessions/1').then(function (response) {
+          let data = this.$data;
+          let code = document.getElementById('code');
+          fetch('/api/sessions/find?code=' + code.value).then(function (response) {
+            code.value = ''
             return response.json();
-          }).then(function (session) {
-            console.log(session);
+          }).then(function (res) {
+            data.session = res.session;
+            data.step = 'assign_name'
           });
         }
       }
