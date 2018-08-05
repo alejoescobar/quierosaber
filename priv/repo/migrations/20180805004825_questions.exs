@@ -10,7 +10,7 @@ defmodule QuieroSaber.Repo.Migrations.Questions do
       add :order, :integer
       add :status, :integer
 
-    timestamps()
+      timestamps()
     end
   end
 end
