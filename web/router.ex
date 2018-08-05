@@ -37,6 +37,14 @@ defmodule QuieroSaber.Router do
     end
   end
 
+  scope "/api", QuieroSaber do
+    pipe_through :api
+
+    scope "/sessions/:session_id", QuieroSaber do
+      post "/participants", ApiParticipantController, :create
+    end
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", QuieroSaber do
   #   pipe_through :api
