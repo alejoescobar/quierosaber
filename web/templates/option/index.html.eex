@@ -3,6 +3,8 @@
 <table class="table">
   <thead>
     <tr>
+      <th>ID</th>
+      <th>Question</th>
       <th>Title</th>
       <th>Order</th>
 
@@ -12,6 +14,8 @@
   <tbody>
 <%= for option <- @options do %>
     <tr>
+      <td><%= option.id %></td>
+      <td>(<%= option.question_id %>) <%= option.question.title %></td>
       <td><%= option.title %></td>
       <td><%= option.order %></td>
 

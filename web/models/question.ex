@@ -8,7 +8,7 @@ defmodule QuieroSaber.Question do
     field :order, :integer
     field :status, :integer
 
-    belongs_to :session, QuieroSaber.Session
+    belongs_to :poll, QuieroSaber.Poll
     has_many :answers, QuieroSaber.Answer
     has_many :options, QuieroSaber.Option
 
@@ -20,7 +20,7 @@ defmodule QuieroSaber.Question do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :description, :attachment, :order, :status])
-    |> validate_required([:title, :description, :attachment, :order, :status])
+    |> cast(params, [:title, :description, :attachment, :order, :status, :poll_id])
+    |> validate_required([:title, :description, :attachment, :order, :status, :poll_id])
   end
 end

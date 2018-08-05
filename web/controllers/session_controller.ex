@@ -5,6 +5,7 @@ defmodule QuieroSaber.SessionController do
 
   def index(conn, _params) do
     sessions = Repo.all(Session)
+      |> Repo.preload([:poll])
     render(conn, "index.html", sessions: sessions)
   end
 

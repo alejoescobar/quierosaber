@@ -3,6 +3,8 @@
 <table class="table">
   <thead>
     <tr>
+      <th>ID</th>
+      <th>Poll</th>
       <th>Title</th>
       <th>Description</th>
       <th>Attachment</th>
@@ -15,6 +17,8 @@
   <tbody>
 <%= for question <- @questions do %>
     <tr>
+      <td><%= question.id %></td>
+      <td>(<%= question.id %>) <%= question.poll.name %></td>
       <td><%= question.title %></td>
       <td><%= question.description %></td>
       <td><%= question.attachment %></td>
