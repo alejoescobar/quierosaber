@@ -50,18 +50,40 @@ let App = {
   initVue: function () {
     return new Vue({
       el: '#app',
-      data: { session: {}, step: 'onboard' },
+      data: {
+        session: {},
+        participant: {},
+        step: 'onboard'
+      },
       methods: {
         findSession: function () {
           let data = this.$data;
           let code = document.getElementById('code');
-          fetch('/api/sessions/find?code=' + code.value).then(function (response) {
-            code.value = ''
-            return response.json();
+          fetch('/api/sessions/find?code=' + code.value).then(function (res) {
+            code.value = '';
+            return res.json();
           }).then(function (res) {
             data.session = res.session;
-            data.step = 'assign_name'
+            data.step = 'assign_name';
           });
+        },
+        createParticipant: function () {
+          let data = this.$data;
+          let nickname = document.getElementById('nickname');
+          let participantData = { participant: {nickname: nickname.value, device_id: 'testing'} }
+          fetch('/api/sessions/' + data.session.id + '/participants', {
+            method: 'POST',
+            body: JSON.stringify(participantData),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(function(res) {
+            nickname.value = '';
+            return res.json()
+          }).then(function (res) {
+            data.participant = res.participant;
+            data.step = 'in_lobby';
+          })
         }
       }
     })
