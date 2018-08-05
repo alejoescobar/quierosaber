@@ -22,6 +22,7 @@ defmodule QuieroSaber.Router do
     resources "/options", OptionController
     resources "/participants", ParticipantController
     resources "/answers", AnswerController
+    resources "/polls", PollController
   end
 
   # Other scopes may use custom stacks.

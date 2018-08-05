@@ -2,9 +2,11 @@ defmodule QuieroSaber.Participant do
   use QuieroSaber.Web, :model
 
   schema "participants" do
-    belongs_to :session, QuieroSaber.Session
     field :device_id, :string
     field :nickname, :string
+
+    belongs_to :session, QuieroSaber.Session
+    has_many :answers, QuieroSaber.Answer
 
     timestamps()
   end
