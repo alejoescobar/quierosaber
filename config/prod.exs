@@ -13,6 +13,7 @@ use Mix.Config
 # which you typically run after static files are built.
 config :quiero_saber, QuieroSaber.Endpoint,
   load_from_system_env: true,
+  http: [port: System.get_env("PORT")],
   url: [scheme: "https", host: "desolate-reef-39722.herokuapp.com", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
