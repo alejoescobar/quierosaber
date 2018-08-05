@@ -2,7 +2,11 @@ defmodule QuieroSaber.Session do
   use QuieroSaber.Web, :model
 
   schema "sessions" do
-    field :code, :string
+    field :code, :integer
+    field :status, :integer
+
+    belongs_to :poll, QuieroSaber.Poll
+    has_many :participants, QuieroSaber.Participant
 
     timestamps()
   end

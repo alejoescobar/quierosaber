@@ -2,9 +2,11 @@ defmodule QuieroSaber.Option do
   use QuieroSaber.Web, :model
 
   schema "options" do
-    belongs_to :question, QuieroSaber.Question
     field :title, :string
     field :order, :integer
+
+    belongs_to :question, QuieroSaber.Question
+    has_many :answers, QuieroSaber.Answers
 
     timestamps()
   end

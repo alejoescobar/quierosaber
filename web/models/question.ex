@@ -2,12 +2,15 @@ defmodule QuieroSaber.Question do
   use QuieroSaber.Web, :model
 
   schema "questions" do
-    belongs_to :session, QuieroSaber.Session
     field :title, :string
     field :description, :string
     field :attachment, :string
     field :order, :integer
     field :status, :integer
+
+    belongs_to :session, QuieroSaber.Session
+    has_many :answers, QuieroSaber.Answer
+    has_many :options, QuieroSaber.Option
 
     timestamps()
   end

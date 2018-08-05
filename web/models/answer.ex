@@ -2,9 +2,10 @@ defmodule QuieroSaber.Answer do
   use QuieroSaber.Web, :model
 
   schema "options" do
-    belongs_to :question, QuieroSaber.Question
     belongs_to :option, QuieroSaber.Option
     belongs_to :participant, QuieroSaber.Participant
+    belongs_to :question, QuieroSaber.Question
+
     timestamps()
   end
 

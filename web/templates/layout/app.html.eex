@@ -31,6 +31,7 @@
 
       <footer>
         <span><%= link "Home", to: page_path(@conn, :index) %></span> |
+        <span><%= link "Polls", to: poll_path(@conn, :index) %></span> |
         <span><%= link "Sessions", to: session_path(@conn, :index) %></span> |
         <span><%= link "Questions", to: question_path(@conn, :index) %></span> |
         <span><%= link "Options", to: option_path(@conn, :index) %></span> |

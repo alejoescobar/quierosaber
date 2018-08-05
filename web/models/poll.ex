@@ -5,6 +5,9 @@ defmodule QuieroSaber.Poll do
     field :name, :string
     field :description, :string
 
+    has_many :questions, QuieroSaber.Question
+    has_many :sessions, QuieroSaber.Session
+
     timestamps()
   end
 
