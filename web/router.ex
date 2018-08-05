@@ -17,7 +17,9 @@ defmodule QuieroSaber.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/sessions", SessionController
+    resources "/sessions", SessionController do
+      get "/welcome", SessionController, :welcome, as: :welcome
+    end
     resources "/questions", QuestionController
     resources "/options", OptionController
     resources "/participants", ParticipantController
